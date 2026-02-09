@@ -13,7 +13,7 @@
                 <h2 class="text-lg font-semibold text-slate-900">Update Employee Information</h2>
                 <p class="text-sm text-slate-500">Update the fields below and upload a new photo if needed.</p>
             </div>
-            <form method="POST" action="{{ url_for('update', id=empleado[0]) }}" enctype="multipart/form-data" id="employeeForm" class="space-y-5">
+            <form method="POST" action="{{ url_for('empleados.update', id=empleado[0]) }}" enctype="multipart/form-data" id="employeeForm" class="space-y-5">
                 <div>
                     <label for="txtNombre" class="block text-sm font-medium text-slate-700">Full Name *</label>
                     <input
@@ -43,6 +43,38 @@
                         maxlength="120"
                     />
                     <p class="mt-2 text-xs text-slate-500">Valid email address required</p>
+                </div>
+
+                <div>
+                    <label for="txtSector" class="block text-sm font-medium text-slate-700">Sector *</label>
+                    <select
+                        id="txtSector"
+                        name="txtSector"
+                        class="mt-2 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                        required
+                    >
+                        <option value="" disabled>Select a sector</option>
+                        {% for sector in sectores %}
+                            <option value="{{ sector[0] }}" {% if sector[0] == empleado[4] %}selected{% endif %}>{{ sector[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="mt-2 text-xs text-slate-500">Choose the employee sector</p>
+                </div>
+
+                <div>
+                    <label for="txtPerfil" class="block text-sm font-medium text-slate-700">Profile *</label>
+                    <select
+                        id="txtPerfil"
+                        name="txtPerfil"
+                        class="mt-2 block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                        required
+                    >
+                        <option value="" disabled>Select a profile</option>
+                        {% for perfil in perfiles %}
+                            <option value="{{ perfil[0] }}" {% if perfil[0] == empleado[5] %}selected{% endif %}>{{ perfil[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="mt-2 text-xs text-slate-500">Choose the employee profile</p>
                 </div>
 
                 <div>
@@ -76,7 +108,7 @@
                     <button type="submit" class="inline-flex items-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500">
                         Update Employee
                     </button>
-                    <a href="{{ url_for('index') }}" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900">
+                    <a href="{{ url_for('empleados.index') }}" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900">
                         Cancel
                     </a>
                 </div>

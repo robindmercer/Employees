@@ -1,11 +1,11 @@
 {% include 'header.html' %}
 
-	{% set is_edit = sector is not none %}
+	{% set is_edit = perfil is not none %}
 	<div class="flex items-center justify-between">
 		<div>
-			<p class="text-xs uppercase tracking-[0.2em] text-slate-500">Sectores</p>
+			<p class="text-xs uppercase tracking-[0.2em] text-slate-500">Profiles</p>
 			<h1 class="mt-2 font-display text-3xl font-semibold text-slate-900">
-				{{ 'Edit Sector' if is_edit else 'Add New Sector' }}
+				{{ 'Edit Profile' if is_edit else 'Add New Profile' }}
 			</h1>
 		</div>
 	</div>
@@ -13,27 +13,27 @@
 	<section class="mt-6">
 		<div class="mx-auto max-w-2xl rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
 			<div class="mb-6">
-				<h2 class="text-lg font-semibold text-slate-900">Sector Details</h2>
-				<p class="text-sm text-slate-500">Provide the sector ID and description.</p>
+				<h2 class="text-lg font-semibold text-slate-900">Profile Details</h2>
+				<p class="text-sm text-slate-500">Provide the profile ID and description.</p>
 			</div>
 			<form
 				method="POST"
-				action="{{ url_for('sectores.sectores_update', id=sector[0]) if is_edit else url_for('sectores.sectores_store') }}"
+				action="{{ url_for('perfiles.perfiles_update', id=perfil[0]) if is_edit else url_for('perfiles.perfiles_store') }}"
 				class="space-y-5"
 			>
 				<div>
-					<label for="txtId" class="block text-sm font-medium text-slate-700">Sector ID *</label>
+					<label for="txtId" class="block text-sm font-medium text-slate-700">Profile ID *</label>
 					<input
 						type="number"
 						class="mt-2 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400"
 						id="txtId"
 						name="txtId"
-						value="{{ sector[0] if is_edit else '' }}"
-						placeholder="Enter sector ID"
+						value="{{ perfil[0] if is_edit else '' }}"
+						placeholder="Enter profile ID"
 						required
 						{{ 'readonly' if is_edit else '' }}
 					/>
-					<p class="mt-2 text-xs text-slate-500">Numeric identifier for the sector.</p>
+					<p class="mt-2 text-xs text-slate-500">Numeric identifier for the profile.</p>
 				</div>
 
 				<div>
@@ -43,8 +43,8 @@
 						class="mt-2 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400"
 						id="txtDescripcion"
 						name="txtDescripcion"
-						value="{{ sector[1] if is_edit else '' }}"
-						placeholder="Enter sector description"
+						value="{{ perfil[1] if is_edit else '' }}"
+						placeholder="Enter profile description"
 						required
 						maxlength="120"
 					/>
@@ -53,9 +53,9 @@
 
 				<div class="flex flex-wrap gap-3 pt-2">
 					<button type="submit" class="inline-flex items-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-500">
-						{{ 'Update Sector' if is_edit else 'Add Sector' }}
+						{{ 'Update Profile' if is_edit else 'Add Profile' }}
 					</button>
-					<a href="{{ url_for('sectores.sectores_index') }}" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900">
+					<a href="{{ url_for('perfiles.perfiles_index') }}" class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900">
 						Cancel
 					</a>
 				</div>
