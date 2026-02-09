@@ -216,6 +216,7 @@ copy .env.example .env
 ### 3️⃣ Create Database
 ```sql
 CREATE DATABASE pythonemp;
+
 CREATE TABLE empleados (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
@@ -231,6 +232,7 @@ CREATE TABLE sectores(
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
 CREATE TABLE perfiles(
    id  INT PRIMARY KEY AUTO_INCREMENT,
    descripcion VARCHAR(100),
@@ -238,12 +240,20 @@ CREATE TABLE perfiles(
    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+### Opcional DATA
+
 insert into sectores values 
-(null,'Compras', current_timestamp(), current_timestamp()),
-(null,'Legales', current_timestamp(), current_timestamp()),
-(null,'Produccion', current_timestamp(), current_timestamp()),
-(null,'Recursos Rumanos', current_timestamp(), current_timestamp()),
-(null,'Ventas', current_timestamp(), current_timestamp());
+(1,'Purchasing', current_timestamp(), current_timestamp()),
+(2,'Legal', current_timestamp(), current_timestamp()),
+(3,'Production', current_timestamp(), current_timestamp()),
+(4,'Staff Department', current_timestamp(), current_timestamp()),
+(5,'Sales', current_timestamp(), current_timestamp());
+
+insert into perfiles values 
+(1,'Purchasing Manager', current_timestamp(), current_timestamp()),
+(2,'Seller', current_timestamp(), current_timestamp()),
+(3,'CEO', current_timestamp(), current_timestamp()),
+
 
 ```
 

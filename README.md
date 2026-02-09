@@ -4,7 +4,7 @@ A modern, secure Flask-based CRUD application for managing employees with file u
 
 ## Features ✨
 
-- **Employee Management**: Create, read, update, and delete employees
+- **Employee Management**: Create, read, update, and delete employees, assigning profiles and sectors to each employee
 - **Photo Uploads**: Secure image upload with validation
 - **Email Validation**: Built-in email format validation
 - **Responsive Design**: Mobile-friendly interface
@@ -18,13 +18,13 @@ A modern, secure Flask-based CRUD application for managing employees with file u
 
 ## Technology Stack 🛠️
 
-| Technology | Purpose |
-|-----------|---------|
-| Python 3.7+ | Backend language |
-| Flask 2.3+ | Web framework |
-| MySQL | Database |
-| Jinja2 | Template engine |
-| Tailwind CSS | UI framework |
+| Technology   | Purpose          |
+|--------------|------------------|
+| Python 3.7+  | Backend language |
+| Flask 2.3+   | Web framework    |
+| MySQL        | Database         |
+| Jinja2       | Template engine  |
+| Tailwind CSS | UI framework     |
 
 ## Installation 📦
 
@@ -79,6 +79,22 @@ CREATE TABLE empleados (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE TABLE sectores(
+   id  INT PRIMARY KEY AUTO_INCREMENT,
+   descripcion VARCHAR(100),
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE perfiles(
+   id  INT PRIMARY KEY AUTO_INCREMENT,
+   descripcion VARCHAR(100),
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
 ```
 
 ### Step 7: Create Uploads Directory
@@ -126,15 +142,15 @@ emploee/
 
 ## API Routes 🔌
 
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/` | Display all employees |
-| GET | `/create` | Show add employee form |
-| POST | `/store` | Save new employee |
-| GET | `/edit/<id>` | Show edit form |
-| POST | `/update/<id>` | Update employee |
-| POST | `/delete/<id>` | Delete employee |
-| GET | `/uploads/<filename>` | Serve uploaded images |
+| Method | Route                 | Description            |
+|:-|:-|:-|
+| GET    | `/`| Display all employees  |
+| GET    | `/create`             | Show add employee form |
+| POST   | `/store`              | Save new employee      |
+| GET    | `/edit/<id>`          | Show edit form         |
+| POST   | `/update/<id>`        | Update employee        |
+| POST   | `/delete/<id>`        | Delete employee        |
+| GET    | `/uploads/<filename>` | Serve uploaded images  |
 
 ## Configuration 🔧
 
