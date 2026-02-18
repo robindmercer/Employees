@@ -1,6 +1,6 @@
 """Employees routes."""
 import logging
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from db import db
 from utils import (
     validate_input, validate_file_upload, save_uploaded_file,
@@ -19,6 +19,31 @@ def load_sectores_perfiles():
     sectores = db.execute_query(sectores_sql) or []
     perfiles = db.execute_query(perfiles_sql) or []
     return sectores, perfiles
+
+
+def get_employee_stats():
+    """Get employee, sector, and profile statistics."""
+    try:
+        # Count employees
+        empleados_count = db.execute_query("SELECT COUNT(*) FROM empleados")
+        count_empleados = empleados_count[0][0] if empleados_count else 0
+
+        # Count sectors
+        sectores_count = db.execute_query("SELECT COUNT(*) FROM sectores")
+        count_sectores = sectores_count[0][0] if sectores_count else 0
+
+        # Count profiles
+        perfiles_count = db.execute_query("SELECT COUNT(*) FROM perfiles")
+        count_perfiles = perfiles_count[0][0] if perfiles_count else 0
+
+        return {
+            'empleados': count_empleados,
+            'sectores': count_sectores,
+            'perfiles': count_perfiles
+        }
+    except Exception as e:
+        logger.error(f"Error getting stats: {e}")
+        return {'empleados': 0, 'sectores': 0, 'perfiles': 0}
 
 
 def parse_sector_perfil(form_data):
@@ -78,10 +103,22 @@ def create():
         return render_template('empleados/create.html', sectores=[], perfiles=[])
 
 
+@empleados_bp.route('/api/stats')
+def api_get_stats():
+    """API endpoint to get employee, sector, and profile statistics."""
+    stats = get_employee_stats()
+    return jsonify(stats)
+
+
 @empleados_bp.route('/landing')
 def landing():
     """Show landing page."""
-    return render_template('landing.html')
+    try:
+        stats = get_employee_stats()
+        return render_template('landing.html', stats=stats)
+    except Exception as e:
+        logger.error(f"Error loading landing page: {e}")
+        return render_template('landing.html', stats={'empleados': 0, 'sectores': 0, 'perfiles': 0})
 
 
 @empleados_bp.route('/store', methods=['POST'])

@@ -5,9 +5,12 @@
             <h1 class="font-display text-3xl font-semibold text-slate-900">Employee List</h1>
             <p class="max-w-xl text-sm text-slate-500">Review profiles, contact details, and manage your team in one place.</p>
         </div>
-        <a href="{{ url_for('empleados.create') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-900 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white">
-            Add New Employee
-        </a>
+        <div class="flex flex-col items-end gap-2">
+            <span class="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">Total: {{ empleados|length }} employees</span>
+            <a href="{{ url_for('empleados.create') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-900 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white">
+                Add New Employee
+            </a>
+        </div>
     </div>
 
     {% if empleados %}
