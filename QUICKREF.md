@@ -114,6 +114,9 @@ pip freeze > requirements.txt
 
 ## Database Setup
 
+1. ✅ Run Mysql Server (In mi case i used XAMPP)
+2. ✅ Start PhpAdmin to manage database
+
 ```sql
 -- Create database
 CREATE DATABASE pythonemp;
