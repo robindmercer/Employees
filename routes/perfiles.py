@@ -37,18 +37,18 @@ def perfiles_create():
 def perfiles_store():
     """Store new profile in database."""
     try:
-        raw_id = request.form.get('txtId', '').strip()
         descripcion = request.form.get('txtDescripcion', '').strip()
 
-        if not raw_id or not descripcion:
-            flash('Profile ID and description are required', 'error')
+        if not descripcion:
+            flash('Description is required', 'error')
             return redirect(url_for('perfiles.perfiles_create'))
 
-        try:
-            perfil_id = int(raw_id)
-        except ValueError:
-            flash('Profile ID must be a number', 'error')
+        next_id_result = db.execute_query("SELECT COALESCE(MAX(id), 0) + 1 FROM perfiles")
+        if not next_id_result:
+            flash('Unable to generate profile ID', 'error')
             return redirect(url_for('perfiles.perfiles_create'))
+
+        perfil_id = next_id_result[0][0]
 
         sql = "INSERT INTO perfiles (id, descripcion) VALUES (%s, %s)"
         db.execute_update(sql, (perfil_id, descripcion))
@@ -107,6 +107,21 @@ def perfiles_update(id):
 def perfiles_delete(id):
     """Delete profile."""
     try:
+        assigned_count_result = db.execute_query(
+            "SELECT COUNT(*) FROM empleados WHERE perfil = %s",
+            (id,)
+        )
+
+        if assigned_count_result is None:
+            flash('Error validating profile usage', 'error')
+            return redirect(url_for('perfiles.perfiles_index'))
+
+        assigned_count = assigned_count_result[0][0] if assigned_count_result else 0
+        if assigned_count > 0:
+            flash('Cannot delete profile: it is assigned to one or more employees', 'error')
+            logger.warning(f"Delete blocked for profile ID {id}: assigned to {assigned_count} employees")
+            return redirect(url_for('perfiles.perfiles_index'))
+
         sql = "DELETE FROM perfiles WHERE id = %s"
         db.execute_update(sql, (id,))
 

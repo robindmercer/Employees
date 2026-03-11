@@ -96,11 +96,17 @@
                     <label for="txtFoto" class="block text-sm font-medium text-slate-700">Update Profile Photo (Optional)</label>
                     <input
                         type="file"
-                        class="mt-2 block w-full text-sm text-slate-600 file:mr-4 file:rounded-md file:border-0 file:bg-slate-900 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-slate-800"
+                        class="sr-only"
                         id="txtFoto"
                         name="txtFoto"
                         accept="image/*"
                     />
+                    <div class="mt-2 flex items-center gap-3">
+                        <label for="txtFoto" class="inline-flex cursor-pointer items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+                            Choose File
+                        </label>
+                        <span id="txtFotoName" class="text-sm text-slate-500">No file chosen</span>
+                    </div>
                     <p class="mt-2 text-xs text-slate-500">Allowed formats: JPG, JPEG, PNG, GIF (Max 5MB)</p>
                 </div>
 
@@ -115,5 +121,20 @@
             </form>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const photoInput = document.getElementById('txtFoto');
+            const photoName = document.getElementById('txtFotoName');
+
+            if (photoInput && photoName) {
+                photoInput.addEventListener('change', function () {
+                    photoName.textContent = this.files && this.files.length > 0
+                        ? this.files[0].name
+                        : 'No file chosen';
+                });
+            }
+        });
+    </script>
 
 {% include 'footer.html' %}

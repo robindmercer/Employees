@@ -37,18 +37,18 @@ def sectores_create():
 def sectores_store():
     """Store new sector in database."""
     try:
-        raw_id = request.form.get('txtId', '').strip()
         descripcion = request.form.get('txtDescripcion', '').strip()
 
-        if not raw_id or not descripcion:
-            flash('Sector ID and description are required', 'error')
+        if not descripcion:
+            flash('Description is required', 'error')
             return redirect(url_for('sectores.sectores_create'))
 
-        try:
-            sector_id = int(raw_id)
-        except ValueError:
-            flash('Sector ID must be a number', 'error')
+        next_id_result = db.execute_query("SELECT COALESCE(MAX(id), 0) + 1 FROM sectores")
+        if not next_id_result:
+            flash('Unable to generate sector ID', 'error')
             return redirect(url_for('sectores.sectores_create'))
+
+        sector_id = next_id_result[0][0]
 
         sql = "INSERT INTO sectores (id, descripcion) VALUES (%s, %s)"
         db.execute_update(sql, (sector_id, descripcion))
@@ -107,6 +107,21 @@ def sectores_update(id):
 def sectores_delete(id):
     """Delete sector."""
     try:
+        assigned_count_result = db.execute_query(
+            "SELECT COUNT(*) FROM empleados WHERE sector = %s",
+            (id,)
+        )
+
+        if assigned_count_result is None:
+            flash('Error validating sector usage', 'error')
+            return redirect(url_for('sectores.sectores_index'))
+
+        assigned_count = assigned_count_result[0][0] if assigned_count_result else 0
+        if assigned_count > 0:
+            flash('Cannot delete sector: it is assigned to one or more employees', 'error')
+            logger.warning(f"Delete blocked for sector ID {id}: assigned to {assigned_count} employees")
+            return redirect(url_for('sectores.sectores_index'))
+
         sql = "DELETE FROM sectores WHERE id = %s"
         db.execute_update(sql, (id,))
 
